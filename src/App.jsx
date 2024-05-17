@@ -16,6 +16,8 @@ function App() {
   const drawingUtils = useRef();
   const canvasRef = useRef();
   const ctxRef = useRef();
+  const [cameraOK, setCameraOK] = useState(false);
+  const [settingOK, setSettingOK] = useState(false);
   useEffect(() => {
     const createPoseLandmarker = async () => {
       const vision = await FilesetResolver.forVisionTasks(
@@ -29,6 +31,7 @@ function App() {
         runningMode: "VIDEO",
         numPoses: 2,
       });
+      setSettingOK(true);
     };
     createPoseLandmarker();
   }, []);
@@ -77,12 +80,17 @@ function App() {
           videoConstraints={{
             facingMode: "user",
           }}
+          onUserMedia={() => setCameraOK(true)}
         />
         <canvas className="position-absolute top-0 start-0" ref={canvasRef} />
       </div>
       <Container fluid>
         <div>
-          <Button onClick={() => setDetectFlag(true)}>姿勢検出</Button>
+          <Button
+            onClick={() => setDetectFlag(true)}
+            disabled={!(cameraOK && settingOK)}>
+            姿勢検出
+          </Button>
         </div>
       </Container>
     </div>
