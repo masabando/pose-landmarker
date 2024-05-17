@@ -11,4 +11,5 @@ export default defineConfig({
     react(),
     basicSsl()
   ],
+  base: '/pose-landmarker/',
 })
